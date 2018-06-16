@@ -1,0 +1,15 @@
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/lozigorbox?useSSL=false&characterEncoding=UTF-8
+    username: create_user
+    password: create_user
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+logging:
+  level:
+    .: debug
+    org.springframework.web: DEBUG
+debug: false

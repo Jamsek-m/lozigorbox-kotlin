@@ -1,0 +1,25 @@
+server:
+  port: 8080
+spring:
+  profiles:
+    active: dev
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      dialect: org.hibernate.dialect.MySQL5Dialect
+      hibernate:
+        hbm2ddl:
+          import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+          import:
+            files: import.sql # comma separated values
+  session:
+    store-type: jdbc
+    jdbc:
+      table-name: spring_session
+      initialize-schema: always
+    timeout: 3600s
+jwt-token:
+  secret: PERicaREZeRAciRep
+  header: lozigorbox
