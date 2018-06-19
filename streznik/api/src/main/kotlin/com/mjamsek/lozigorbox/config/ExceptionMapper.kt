@@ -15,7 +15,7 @@ class ExceptionMapper : ResponseEntityExceptionHandler() {
     @ExceptionHandler(LozigorboxException::class)
     fun handleException(ex: LozigorboxException, request: WebRequest): ResponseEntity<Any> {
         val response = ExceptionMapperResponse.buildFromException(ex)
-        return handleExceptionInternal(ex, response, HttpHeaders.EMPTY, HttpStatus.valueOf(ex.status), request)
+        return handleExceptionInternal(ex, response, HttpHeaders(), HttpStatus.valueOf(ex.status), request)
     }
 
 }

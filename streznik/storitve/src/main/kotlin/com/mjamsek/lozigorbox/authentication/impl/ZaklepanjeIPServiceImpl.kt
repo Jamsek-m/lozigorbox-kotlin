@@ -3,9 +3,9 @@ package com.mjamsek.lozigorbox.authentication.impl
 import com.mjamsek.lozigorbox.authentication.ZaklepanjeIPService
 import com.mjamsek.lozigorbox.error.ZaklepIpException
 import com.mjamsek.lozigorbox.repositories.IpZaklepRepository
-import com.mjamsek.lozigorbox.repositories.NastavitevRepository
 import com.mjamsek.lozigorbox.schema.IpZaklep
 import com.mjamsek.lozigorbox.schema.NastavitevConstants
+import com.mjamsek.lozigorbox.services.NastavitevService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
@@ -14,20 +14,15 @@ import java.util.*
 class ZaklepanjeIPServiceImpl: ZaklepanjeIPService {
     
     @Autowired
-    lateinit var nastavitevRepository: NastavitevRepository
+    private lateinit var nastavitevService: NastavitevService
     
     @Autowired
-    lateinit var ipZaklepRepository: IpZaklepRepository
+    private lateinit var ipZaklepRepository: IpZaklepRepository
     
     override fun preveriIpZaklep(ip: String) {
-        val steviloDovoljenihPoskusov: Int = nastavitevRepository
-            .findByKljuc(NastavitevConstants.ZAKLEP_POSKUSI.kljuc)
-            .vrednost
-            .toInt()
-        val steviloSekundPoZadnjiPrijavi: Int = nastavitevRepository
-            .findByKljuc(NastavitevConstants.ZAKLEP_ZADNJA_PRIJAVA.kljuc)
-            .vrednost
-            .toInt()
+        val steviloDovoljenihPoskusov: Int = nastavitevService.get(NastavitevConstants.ZAKLEP_POSKUSI.kljuc).toInt()
+        val steviloSekundPoZadnjiPrijavi: Int = nastavitevService.get(NastavitevConstants.ZAKLEP_TRAJANJE.kljuc).toInt()
+        
         val steviloMinutZaklepa: Int = steviloSekundPoZadnjiPrijavi / 60
         val datumNSekundNazaj: Date = this.vrniDatumNSekundNazaj(steviloSekundPoZadnjiPrijavi)
         if (ipZaklepRepository.prestejSteviloPrijav(ip, datumNSekundNazaj) >= steviloDovoljenihPoskusov) {

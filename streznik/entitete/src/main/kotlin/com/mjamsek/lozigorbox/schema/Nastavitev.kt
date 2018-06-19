@@ -24,6 +24,8 @@ data class Nastavitev(
 
 enum class NastavitevConstants(val kljuc: String) {
     ZAKLEP_POSKUSI("zaklep.poskusi"),
-    ZAKLEP_ZADNJA_PRIJAVA("zaklep.zadnja.prijava"),
-    PRIJAVA_VELJAVNOST("prijava.veljavnost")
+    ZAKLEP_TRAJANJE("zaklep.trajanje"),
+    JWT_VELJAVNOST("jwt.veljavnost"),
+    JWT_SECRET("jwt.secret"),
+    JWT_HEADER("jwt.header")
 }

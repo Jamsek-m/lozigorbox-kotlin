@@ -9,11 +9,11 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       dialect: org.hibernate.dialect.MySQL5Dialect
-      hibernate:
-        hbm2ddl:
-          import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
-          import:
-            files: import.sql # comma separated values
+      # dodaj ce rabis vec import datotek
+      #hibernate:
+        #hbm2ddl:
+          #import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+          #import_files: "import.sql" # comma separated values
   session:
     store-type: jdbc
     jdbc:

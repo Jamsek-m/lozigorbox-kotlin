@@ -29,7 +29,7 @@ data class Uporabnik(
     @JoinColumn(name = "status_id")
     var status: UporabnikStatus? = null,
     
-    @ManyToMany
+    @ManyToMany(cascade = [(CascadeType.ALL)])
     @JoinTable(
         name = "uporabniske_vloge",
         joinColumns = [(JoinColumn(name = "uporabnik_id"))],

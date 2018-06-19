@@ -3,6 +3,7 @@ package com.mjamsek.lozigorbox.endpoints
 import com.mjamsek.lozigorbox.authentication.JWTokenService
 import com.mjamsek.lozigorbox.authentication.JeAvtenticiran
 import com.mjamsek.lozigorbox.repositories.UporabnikRepository
+import com.mjamsek.lozigorbox.schema.Uporabnik
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,7 +30,7 @@ class TestVir(val serv: UporabnikRepository) {
         session.creationTime
  
         val hash: HashMap<String, Any> = HashMap()
-        hash["uporabnik"] = serv.findById(1)
+        hash["uporabnik"] = Uporabnik()
         return ResponseEntity.ok(hash)
     }
     

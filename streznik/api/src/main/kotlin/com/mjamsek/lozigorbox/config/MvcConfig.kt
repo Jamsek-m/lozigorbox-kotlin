@@ -7,26 +7,26 @@ import com.mjamsek.lozigorbox.authentication.SamoDevInterceptor
 import com.mjamsek.lozigorbox.services.DevService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.web.servlet.config.annotation.CorsRegistry
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 class MvcConfig(val devService: DevService) {
     
-    @Bean
+    /*@Bean
     fun setCORSheaders(): WebMvcConfigurer {
         return object : WebMvcConfigurer {
-            override fun addCorsMappings(registry: CorsRegistry) {
+            
+            override fun addCorsMappings(registry: CorsRegistry?) {
                 if (devService.isInDevMode()) {
-                    registry.addMapping("/**")
+                    registry!!.addMapping("**")
                         .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS")
                         .allowedOrigins("*")
                         .allowCredentials(true)
                         .allowedHeaders("*")
                 }
             }
+            
         }
-    }
+    }*/
     
     @Bean
     fun jeAvtenticiranIntercept(): JeAvtenticiranInterceptor {

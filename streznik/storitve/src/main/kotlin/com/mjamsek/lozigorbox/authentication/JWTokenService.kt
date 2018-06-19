@@ -11,6 +11,8 @@ interface JWTokenService {
     
     fun generirajJWToken(uporabnik: Uporabnik): String
     
+    fun generirajJWToken(uporabnik: Uporabnik, sekunde: Int): String
+    
     fun validirajZeton(token: String): Boolean
     
     fun getVeljavnostZetona(token: String): Date?

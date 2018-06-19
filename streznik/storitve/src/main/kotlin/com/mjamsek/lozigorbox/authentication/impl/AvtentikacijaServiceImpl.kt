@@ -8,9 +8,9 @@ import com.mjamsek.lozigorbox.authentication.SecurityKonstante
 import com.mjamsek.lozigorbox.authentication.ZaklepanjeIPService
 import com.mjamsek.lozigorbox.error.NapacnaAvtorizacijaException
 import com.mjamsek.lozigorbox.error.NiPrijavljenException
-import com.mjamsek.lozigorbox.repositories.NastavitevRepository
 import com.mjamsek.lozigorbox.schema.NastavitevConstants
 import com.mjamsek.lozigorbox.schema.Uporabnik
+import com.mjamsek.lozigorbox.services.NastavitevService
 import com.mjamsek.lozigorbox.services.UporabnikService
 import org.mindrot.jbcrypt.BCrypt
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,7 +34,7 @@ class AvtentikacijaServiceImpl : AvtentikacijaService {
     private lateinit var zaklepanjeIPService: ZaklepanjeIPService
     
     @Autowired
-    private lateinit var nastavitevRepository: NastavitevRepository
+    private lateinit var nastavitevService: NastavitevService
     
     @Autowired
     private lateinit var request: HttpServletRequest
@@ -42,11 +42,9 @@ class AvtentikacijaServiceImpl : AvtentikacijaService {
     @Autowired
     private lateinit var session: HttpSession
     
-    override fun odjaviUporabnika(response: HttpServletResponse): HttpServletResponse {
-        val cookie: Cookie = createCookie(null, 0)
-        response.setHeader(SecurityKonstante.ALLOW_CREDENTIALS_HEADER.value, "true")
-        response.addCookie(cookie)
-        return response
+    override fun odjaviUporabnika(response: HttpServletResponse): Cookie {
+        session.invalidate()
+        return createCookie(null, 0)
     }
     
     override fun prijavaJeVeljavna(): Boolean {
@@ -55,18 +53,20 @@ class AvtentikacijaServiceImpl : AvtentikacijaService {
     }
     
     override fun osveziZeton(response: HttpServletResponse): Cookie? {
-        if (session.id != this.getSessionId()) {
+        val cookie: Cookie? = this.getLoginCookie()
+        
+        if (cookie != null && session.id != this.getSessionId()) {
             throw NapacnaAvtorizacijaException("Identifikator seje se ne ujema!")
         }
         
         val uporabnik: Uporabnik = this.getPrijavljenUporabnik() ?: return null
-        val sekunde: Int = nastavitevRepository
-            .findByKljuc(NastavitevConstants.PRIJAVA_VELJAVNOST.kljuc)
-            .vrednost
-            .toInt()
-        val zeton: String = jwTokenService.generirajJWToken(uporabnik)
         
-        return createCookie(zeton, sekunde)
+        // poskrbi da ni veljavnost zetona vecja od veljavnosti seje
+        val veljavnostZetona: Int = this.getVeljavnostOsvezenegaZetona().toInt()
+        
+        val zeton: String = jwTokenService.generirajJWToken(uporabnik, veljavnostZetona)
+        
+        return createCookie(zeton, veljavnostZetona)
     }
     
     override fun getVeljavnostPrijave(): Date? {
@@ -79,6 +79,7 @@ class AvtentikacijaServiceImpl : AvtentikacijaService {
     }
     
     override fun prijaviUporabnika(response: HttpServletResponse, zahteva: PrijavaRequest): PrijavaResponse {
+        session.creationTime
         val ip: String = request.remoteAddr
         zaklepanjeIPService.preveriIpZaklep(ip)
         
@@ -91,17 +92,16 @@ class AvtentikacijaServiceImpl : AvtentikacijaService {
             zaklepanjeIPService.dodajNeveljavnoPrijavo(ip)
             throw NapacnaAvtorizacijaException("Vnešeno geslo je napačno!")
         }
-        session.invalidate()
+        //generate new session
+        
+        /*session.invalidate()
         val newSession: HttpSession = request.session
-        newSession.setAttribute(SecurityKonstante.SESSION_IS_LOGGED_IN.value, true)
+        newSession.setAttribute(SecurityKonstante.SESSION_IS_LOGGED_IN.value, true)*/
         
         val zeton: String = jwTokenService.generirajJWToken(uporabnik)
-        val sekunde: Int = nastavitevRepository
-            .findByKljuc(NastavitevConstants.PRIJAVA_VELJAVNOST.kljuc)
-            .vrednost
-            .toInt()
+        val veljavnostZetona: Int = nastavitevService.get(NastavitevConstants.JWT_VELJAVNOST.kljuc).toInt()
         
-        val cookie: Cookie = createCookie(zeton, sekunde)
+        val cookie: Cookie = createCookie(zeton, veljavnostZetona)
         
         response.setHeader(SecurityKonstante.ALLOW_CREDENTIALS_HEADER.value, "true")
         response.addCookie(cookie)
@@ -138,5 +138,16 @@ class AvtentikacijaServiceImpl : AvtentikacijaService {
             return null
         }
         return cookies.find { c: Cookie -> c.name == SecurityKonstante.COOKIE_NAME.value }
+    }
+    
+    private fun getVeljavnostOsvezenegaZetona(): Long {
+        // trenutni cas v milisekundah
+        val trenutniCas = System.currentTimeMillis() % 1000
+        // preostanek veljavnosti seje
+        val veljavnostSeje: Long = (session.creationTime + session.maxInactiveInterval * 1000) - trenutniCas
+        // privzeta veljavnost zetona
+        val veljavnostZetona: Long = nastavitevService.get(NastavitevConstants.JWT_VELJAVNOST.kljuc).toLong()
+        
+        return Math.min(veljavnostSeje, veljavnostZetona)
     }
 }

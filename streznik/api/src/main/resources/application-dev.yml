@@ -7,9 +7,9 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
 logging:
   level:
     .: debug
     org.springframework.web: DEBUG
-debug: false
+debug: true

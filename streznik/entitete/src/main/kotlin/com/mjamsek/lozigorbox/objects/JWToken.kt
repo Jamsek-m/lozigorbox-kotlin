@@ -44,9 +44,14 @@ class JWToken private constructor() {
         return this
     }
     
+    fun setExpirationDate(secondsFromNow: Int): JWToken {
+        this.expirationDate = DateUtil.incrementDateForSeconds(Date(), secondsFromNow)
+        return this
+    }
+    
     fun setSession(session: HttpSession): JWToken {
         this.session = session
-        this.expirationDate = DateUtil.incrementDateForSeconds(Date(session.creationTime), session.maxInactiveInterval)
+        // this.expirationDate = DateUtil.incrementDateForSeconds(Date(session.creationTime), session.maxInactiveInterval)
         return this
     }
     
@@ -122,6 +127,7 @@ class JWToken private constructor() {
 enum class JWTokenConstants(val field: String) {
     UPORABNIK_ID("uporabnik_id"),
     UPORABNIK_VLOGE("uporabnik_vloge"),
-    SESSION_ID("session_id")
+    SESSION_ID("session_id"),
+    EXPIRATION("exp")
     
 }

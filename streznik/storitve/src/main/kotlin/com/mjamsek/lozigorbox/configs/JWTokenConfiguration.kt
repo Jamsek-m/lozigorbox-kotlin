@@ -1,17 +1,22 @@
 package com.mjamsek.lozigorbox.configs
 
-import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.context.annotation.Configuration
+import com.mjamsek.lozigorbox.schema.NastavitevConstants
+import com.mjamsek.lozigorbox.services.NastavitevService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-@Configuration
-@ConfigurationProperties(prefix = "jwt-token")
-class JWTokenConfiguration {
-    lateinit var secret: String
-    lateinit var header: String
-}
-
 @Component
-class SpringSessionConfig (
-    val timeout: Int = 3600
-)
+class JWTokenConfiguration {
+    
+    @Autowired
+    private lateinit var nastavitevService: NastavitevService
+    
+    fun getHeader(): String {
+        return nastavitevService.get(NastavitevConstants.JWT_HEADER.kljuc)
+    }
+    
+    fun getSecret(): String {
+        return nastavitevService.get(NastavitevConstants.JWT_SECRET.kljuc)
+    }
+    
+}

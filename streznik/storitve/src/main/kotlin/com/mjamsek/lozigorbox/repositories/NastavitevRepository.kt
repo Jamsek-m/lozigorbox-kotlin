@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface NastavitevRepository: JpaRepository<Nastavitev, Long> {
     
-    fun findByKljuc(kljuc: String): Nastavitev
+    fun findByKljuc(kljuc: String): Nastavitev?
     
 }

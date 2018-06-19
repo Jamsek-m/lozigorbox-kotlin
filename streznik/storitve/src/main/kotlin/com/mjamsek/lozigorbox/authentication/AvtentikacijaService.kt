@@ -11,7 +11,7 @@ interface AvtentikacijaService {
     
     fun prijaviUporabnika(response: HttpServletResponse, zahteva: PrijavaRequest): PrijavaResponse
     
-    fun odjaviUporabnika(response: HttpServletResponse): HttpServletResponse
+    fun odjaviUporabnika(response: HttpServletResponse): Cookie
     
     fun prijavaJeVeljavna(): Boolean
     
