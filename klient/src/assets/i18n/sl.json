@@ -1,0 +1,20 @@
+{
+    "TEST": "testni tekst v slovenščini",
+    "NAVIGATION": {
+        "LOGOUT": "Odjava",
+        "USER_DATA": "Moj profil",
+        "LOGIN": {
+            "TITLE": "Prijava",
+            "ERROR": {
+                "NO_SUCH_USER": "Uporabnik ne obstaja!",
+                "INCORRECT_PASS": "Napačno geslo!",
+                "EMPTY_DATA": "Podatki morate vse podatke!"
+            },
+            "FORM": {
+                "PASS": "Geslo",
+                "EMAIL": "Elektronski naslov",
+                "SUBMIT": "Prijava"
+            }
+        }
+    }
+}

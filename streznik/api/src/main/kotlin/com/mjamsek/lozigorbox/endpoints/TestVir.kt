@@ -15,7 +15,7 @@ import java.util.*
 import javax.servlet.http.HttpSession
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/v1")
 class TestVir(val serv: UporabnikRepository) {
     
     private final val logger: Logger = LoggerFactory.getLogger(TestVir::class.java)
@@ -31,6 +31,13 @@ class TestVir(val serv: UporabnikRepository) {
  
         val hash: HashMap<String, Any> = HashMap()
         hash["uporabnik"] = Uporabnik()
+        return ResponseEntity.ok(hash)
+    }
+    
+    @GetMapping("echo")
+    fun echo(): ResponseEntity<Any> {
+        val hash: HashMap<String, String> = HashMap()
+        hash["cmd"] = "ECHO"
         return ResponseEntity.ok(hash)
     }
     

@@ -1,3 +1,44 @@
 <header class="rdece-zaglavje">
-    HEADER
+    <span class="title-zaglavje">
+        <a routerLink="/">HEADER</a>
+    </span>
+
+    <!-- if je prijavljen -->
+    <div *ngIf="prijavljen" dropdown class="btn-group header-menu-group" placement="bottom right">
+        <button id="header-menu-btn" class="btn btn-link dropdown-toggle" dropdownToggle type="button">
+            <strong>
+                {{trenutniUporabnik.email}}
+            </strong>
+        </button>
+        <ul id="header-menu" *dropdownMenu class="dropdown-menu dropdown-menu-right"
+            role="menu" aria-labelledby="header-menu-btn">
+            <li role="menuitem">
+                <a class="dropdown-item" routerLink="">{{ "NAVIGATION.USER_DATA" | translate}}</a>
+            </li>
+            <li class="divider dropdown-divider"></li>
+            <li role="menuitem">
+                <a class="dropdown-item" routerLink="" (click)="odjava()">{{ "NAVIGATION.LOGOUT" | translate}}</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="header-menu-group">
+        <div dropdown class="btn-group" placement="bottom">
+
+            <button id="lang_btn" class="btn btn-link dropdown-toggle" dropdownToggle type="button">
+                <img style="border: 1px solid black;" src="assets/images/{{trenutniLocale}}-lang32.png" alt="{{trenutniLocale}}"/>
+            </button>
+
+            <ul id="lang_menu" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="lang_btn">
+
+                <li role="menuitem" *ngFor="let locale of availableLocales" style="text-align: center">
+                    <a [routerLink]="" (click)="spremeniJezik(locale)" class="lang-selector">
+                        <img src="../assets/images/{{locale}}-lang32.png" alt="{{locale}}"/>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
 </header>

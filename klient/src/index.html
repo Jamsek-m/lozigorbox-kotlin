@@ -1,14 +1,58 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Klient</title>
-  <base href="/">
+    <head>
+        <meta charset="utf-8">
+        <title>Klient</title>
+        <base href="/">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <style>
+            .loading-screen {
+                opacity: 0;
+                display: flex;
+                transition: opacity .8s ease-in-out;
+                position: fixed;
+                height: 100%;
+                width: 100%;
+                top: 0;
+                left: 0;
+                /*background: #f3f3f3;*/
+                background: #1d1d1d;
+                z-index: -1;
+            }
+            app-root:empty + .loading-screen {
+                opacity: 1;
+                z-index: 100;
+            }
+            .spinner {
+                position: absolute !important;
+                left: 50% !important;
+                top: 50% !important;
+                z-index: 1 !important;
+                width: 150px !important;
+                height: 150px !important;
+                margin: -75px 0 0 -75px !important;
+                border: 16px solid #f3f3f3 !important;
+                border-radius: 50% !important;
+                border-top: 16px solid #3498db !important;
+                -webkit-animation: spin 2s linear infinite !important;
+                animation: spin 2s linear infinite !important;
+            }
+            @-webkit-keyframes spin {
+                0% { -webkit-transform: rotate(0deg); }
+                100% { -webkit-transform: rotate(360deg); }
+            }
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        </style>
+    </head>
+    <body>
+        <app-root></app-root>
+        <div class="loading-screen">
+            <div class="spinner"></div>
+        </div>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
-<body>
-  <app-root></app-root>
-</body>
+    </body>
 </html>

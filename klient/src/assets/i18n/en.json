@@ -1,0 +1,20 @@
+{
+    "TEST": "test text in english",
+    "NAVIGATION": {
+        "LOGOUT": "Logout",
+        "USER_DATA": "My profile",
+        "LOGIN": {
+            "TITLE": "Log in",
+            "ERROR": {
+                "NO_SUCH_USER": "User doesn't exists!",
+                "INCORRECT_PASS": "Wrong password!",
+                "EMPTY_DATA": "You need to provide all data!"
+            },
+            "FORM": {
+                "PASS": "Password",
+                "EMAIL": "E-mail",
+                "SUBMIT": "Log in"
+            }
+        }
+    }
+}

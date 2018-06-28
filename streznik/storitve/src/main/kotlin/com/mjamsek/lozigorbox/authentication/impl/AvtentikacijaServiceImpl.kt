@@ -6,6 +6,7 @@ import com.mjamsek.lozigorbox.authentication.AvtentikacijaService
 import com.mjamsek.lozigorbox.authentication.JWTokenService
 import com.mjamsek.lozigorbox.authentication.SecurityKonstante
 import com.mjamsek.lozigorbox.authentication.ZaklepanjeIPService
+import com.mjamsek.lozigorbox.constants.KlientTranslateCodes
 import com.mjamsek.lozigorbox.error.NapacnaAvtorizacijaException
 import com.mjamsek.lozigorbox.error.NiPrijavljenException
 import com.mjamsek.lozigorbox.schema.NastavitevConstants
@@ -86,11 +87,11 @@ class AvtentikacijaServiceImpl : AvtentikacijaService {
         val uporabnik: Uporabnik? = uporabnikService.pridobiZEmailom(zahteva.email)
         if (uporabnik == null) {
             zaklepanjeIPService.dodajNeveljavnoPrijavo(ip)
-            throw NapacnaAvtorizacijaException("Uporabnik ne obstaja!")
+            throw NapacnaAvtorizacijaException(KlientTranslateCodes.NAV_LOGIN_ERROR_NO_SUCH_USER.kljuc)
         }
         if (!BCrypt.checkpw(zahteva.geslo, uporabnik.geslo)) {
             zaklepanjeIPService.dodajNeveljavnoPrijavo(ip)
-            throw NapacnaAvtorizacijaException("Vnešeno geslo je napačno!")
+            throw NapacnaAvtorizacijaException(KlientTranslateCodes.NAV_LOGIN_ERROR_PASS.kljuc)
         }
         //generate new session
         

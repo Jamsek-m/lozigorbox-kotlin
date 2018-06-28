@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface UporabnikRepository : JpaRepository<Uporabnik, Long> {
     
-    fun findByEmailAndStatus(email: String, status: UporabnikStatus): Uporabnik
+    fun findByEmailAndStatus(email: String, status: UporabnikStatus): Uporabnik?
     
 }
 

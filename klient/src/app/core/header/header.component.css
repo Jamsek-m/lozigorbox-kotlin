@@ -2,3 +2,21 @@
     height: 5em;
     background-color: #b4162c;
 }
+.header-menu-group {
+    display: inline;
+    float: right;
+    margin-right: 20px;
+    margin-top: 20px;
+}
+
+.header-menu-group button {
+    color: white;
+}
+.header-menu-group:hover button {
+    text-decoration: none;
+}
+
+.dropdown-menu {
+    min-width: 40px;
+}
+

@@ -24,7 +24,7 @@ class ResourceConfig {
     
             override fun addCorsMappings(registry: CorsRegistry) {
                 if (devService.isInDevMode()) {
-                    registry.addMapping("**")
+                    registry.addMapping("/**")
                         .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS")
                         .allowedOrigins("*")
                         .allowCredentials(true)
@@ -39,6 +39,7 @@ class ResourceConfig {
                         .addResourceLocations("classpath:/static/", "classpath:/angular/")
                 }
             }
+            
         }
     }
     
