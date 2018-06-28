@@ -69,4 +69,13 @@ class AvtentikacijaVir {
         return ResponseEntity.ok(uporabnik.imaVlogo(Vloge.valueOf(vloga)))
     }
     
+    @GetMapping("ima-vloge")
+    fun imaEnoOdVlog(@RequestParam("vloge") vloge: Array<String>): ResponseEntity<Boolean> {
+        val uporabnik: Uporabnik = avtentikacijaService.getPrijavljenUporabnik() ?: throw NiPrijavljenException()
+        
+        val filtriraneVloge: List<String> = vloge.filter { vl -> uporabnik.imaVlogo(Vloge.valueOf(vl)) }
+        
+        return ResponseEntity.ok(filtriraneVloge.isNotEmpty())
+    }
+    
 }
