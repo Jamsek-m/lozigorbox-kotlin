@@ -1,7 +1,7 @@
 export enum MediaType {
     APP_JSON = "application/json",
     TEXT_PLAIN = "text/plain",
-    "BLOB" = "blob"
+    BLOB = "blob"
 }
 
 export enum HeaderTypes {
